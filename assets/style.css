@@ -1,7 +1,36 @@
 .container{
-    background-color: rgb(244, 235, 187);
-    max-width: 800px;  
+      background-color: #F5F5F5;
+      max-width: 800px;  
       margin: 0 auto;    
       padding: 20px;     
-      border: 1px solid #ccc; 
-    }
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border-radius: 5px; 
+      flex-direction: column;
+      align-items: center;
+      display: flex;
+    }   
+
+button{
+      display: flex;
+      background-color: #936c00;
+      max-width: 250  px;  
+      max-height: 5px;
+      color: white;    
+      padding: 20px;     
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      margin: 5px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+      align-items: center;
+      justify-content: center;
+      
+}
+button:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px); /* efeito leve de elevação */
+}

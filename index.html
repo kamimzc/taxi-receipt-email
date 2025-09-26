@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encaminhamento de Comprovante</title>
+    <title>Emissão de Comprovante</title>
      <link rel="stylesheet" href="/assets/style.css">
      
 </head>
 <body>
     <div class="container">
-    <center><h1>Encaminhamento de Comprovante</h1></center>
+    <center><h1>Emissão de Comprovante</h1></center>
+    <center><p>Ponto Táxi Saudade</p></center>
     <br><br>
     <form id="comprovante">
         <center><input type="text" id="nome" placeholder="Nome do Cliente" required>
@@ -25,7 +26,14 @@
         </center>
     </form>
     <br><br>
-        <center><button onclick="enviarComprovante()">Enviar Comprovante</button></center>
+        <div class="button">
+        <button onclick="enviarporEmail()">Enviar por E-mail</button>
+        <br>
+        <button onclick="enviarComprovante()">Emitir Comprovante</button>
+        <br>
+        <button onclick="entrarnaConversa()">Entrar na Conversa</button>
+        
+        
     <script src="/script/firebase.js"></script>
 </body>
 </html>
