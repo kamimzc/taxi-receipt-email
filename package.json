@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "html2pdf.js": "^0.12.1"
+  }
+}
