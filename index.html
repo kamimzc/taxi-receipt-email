@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Emissão de Comprovante</title>
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
@@ -21,16 +22,17 @@
                 <input type="text" id="valor" placeholder="Valor da Corrida" required><br><br>
             </center>
         </form>
-
-        <div id="comprovante-pdf" style="display:none; padding:20px; font-family:Arial;">
-            <div style="text-align:center; border-bottom:2px solid #000; margin-bottom:10px;">
-                <img src="logo.png" alt="Logo" style="height:50px;">
-                <h2>Comprovante de Corrida - Taxista Ronaldo Ceola</h2>
+            <div id="comprovante-pdf" style="display:none; padding:20px; font-family:Arial, sans-serif; width: 100%;">
+                <h2 style="text-align:center;">Comprovante de Corrida</h2>
+                <hr>
+                <p><strong>Emitido por:</strong> Ronaldo Ceola - Ponto Táxi Saudade</p>
+                <p><strong>Data:</strong> <span id="pdf-data"></span></p>
+                <p><strong>Nome:</strong> <span id="pdf-nome"></span></p>
+                <p><strong>E-mail:</strong> <span id="pdf-email"></span></p>
+                <p><strong>Valor:</strong> <span id="pdf-valor"></span></p>
+                <hr>
+                <p style="text-align:center;">Obrigado pela preferência!</p>
             </div>
-            <p><strong>Nome:</strong> <span id="pdf-nome"></span></p>
-            <p><strong>Data:</strong> <span id="pdf-data"></span></p>
-            <p><strong>Valor da Corrida:</strong> <span id="pdf-valor"></span></p>
-        </div>
 
         <br><br>
         <div class="button">
@@ -40,7 +42,12 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js"></script>
-    <script type="module" src="/script/email.js"></script>
+            <!-- Libs primeiro -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser/dist/email.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+        <!-- Depois seu código -->
+        <script src="/script/email.js"></script>
+
 </body>
 </html>
