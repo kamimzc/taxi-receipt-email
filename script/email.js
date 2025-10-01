@@ -3,17 +3,30 @@ emailjs.init("VWEv3xUnqizxBrP-F");
 function getComprovanteData() {
     return {
         nome: document.querySelector("#nome").value,
+        cpf: document.querySelector("#cpf").value,
         email: document.querySelector("#email").value,
-        valor: document.querySelector("#valor").value,
-        data: document.querySelector("#data").value || new Date().toISOString()
+        telefone: document.querySelector("#telefone").value,
+        data: document.querySelector("#data").value || new Date().toISOString(),
+        origem: document.querySelector("#origem").value,
+        destino: document.querySelector("#destino").value,
+        pagamento: document.querySelector("#pagamento").value,
+        valor: document.querySelector("#valor").value
     };
 }
 
 function updateComprovanteUI(data) {
     const dataFormatada = new Date(data.data).toLocaleString("pt-BR");
+    
     document.querySelector("#pdf-nome").textContent = data.nome;
+    document.querySelector("#pdf-cpf").textContent = data.cpf;
+    document.querySelector("#pdf-email").textContent = data.email;
+    document.querySelector("#pdf-telefone").textContent = data.telefone;
     document.querySelector("#pdf-data").textContent = dataFormatada;
+    document.querySelector("#pdf-origem").textContent = data.origem;
+    document.querySelector("#pdf-destino").textContent = data.destino;
+    document.querySelector("#pdf-pagamento").textContent = data.pagamento;
     document.querySelector("#pdf-valor").textContent = data.valor;
+
     document.getElementById("comprovante-pdf").style.display = "block";
 }
 
@@ -34,8 +47,13 @@ function enviarEmail() {
 
     const emailData = {
         nome: data.nome,
+        cpf: data.cpf,
         email: data.email,
+        telefone: data.telefone,
         data: new Date(data.data).toLocaleString("pt-BR"),
+        origem: data.origem,
+        destino: data.destino,
+        pagamento: data.pagamento,
         valor: data.valor
     };
 
