@@ -1,22 +1,18 @@
 emailjs.init("VWEv3xUnqizxBrP-F");
 
 function getComprovanteData() {
-    return {
-        nome: document.querySelector("#nome").value,
-        cpf: document.querySelector("#cpf").value,
-        email: document.querySelector("#email").value,
-        telefone: document.querySelector("#telefone").value,
-        data: document.querySelector("#data").value || new Date().toISOString(),
-        origem: document.querySelector("#origem").value,
-        destino: document.querySelector("#destino").value,
-        pagamento: document.querySelector("#pagamento").value,
-        valor: document.querySelector("#valor").value
-    };
+    const campos = ["nome", "cpf", "email", "telefone", "data", "origem", "destino", "pagamento", "valor"];
+    const data = {};
+    campos.forEach(campo => {
+        data[campo] = document.querySelector(`#${campo}`)?.value || "";
+    });
+    data.data = data.data || new Date().toISOString();
+    return data;
 }
 
 function updateComprovanteUI(data) {
     const dataFormatada = new Date(data.data).toLocaleString("pt-BR");
-    
+
     document.querySelector("#pdf-nome").textContent = data.nome;
     document.querySelector("#pdf-cpf").textContent = data.cpf;
     document.querySelector("#pdf-email").textContent = data.email;
@@ -45,16 +41,29 @@ function enviarEmail() {
     const data = getComprovanteData();
     updateComprovanteUI(data);
 
+    const campos = {
+        nome: "Nome do Passageiro",
+        cpf: "CPF",
+        data: "Data",
+        origem: "Origem",
+        destino: "Destino",
+        pagamento: "Forma de Pagamento",
+        valor: "Valor"
+    };
+
+    let emailBody = "<ul>";
+    for (let key in campos) {
+        if (data[key]) {
+            let valor = key === "data" ? new Date(data[key]).toLocaleString("pt-BR") : data[key];
+            emailBody += `<li><strong>${campos[key]}:</strong> ${valor}</li>`;
+        }
+    }
+    emailBody += "</ul>";
+
     const emailData = {
-        nome: data.nome,
-        cpf: data.cpf,
-        email: data.email,
-        telefone: data.telefone,
-        data: new Date(data.data).toLocaleString("pt-BR"),
-        origem: data.origem,
-        destino: data.destino,
-        pagamento: data.pagamento,
-        valor: data.valor
+        nome: data.nome || "",
+        emailBody: emailBody,
+        email: data.email || ""
     };
 
     emailjs.send("service_f81ljjf", "template_29nrnva", emailData)
@@ -65,9 +74,10 @@ function enviarEmail() {
         });
 }
 
+
 function entrarNaConversa() {
     const telefone = document.querySelector("#telefone").value.replace(/\D/g, "");
-    if (!telefone) return alert("Por favor, insira um telefone válido.");
+    if (!telefone || telefone.length < 10) return alert("Por favor, insira um telefone válido.");
     window.open(`https://wa.me/${telefone}`, "_blank");
 }
 

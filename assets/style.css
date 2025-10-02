@@ -9,11 +9,12 @@
       flex-direction: column;
       align-items: center;
       display: flex;
+      font-family: 'Poppins', sans-serif;
     }   
 
 button{
       display: flex;
-      background-color: #936c00;
+      background-color: #c28c00;
       max-width: 250  px;  
       max-height: 5px;
       color: white;    
@@ -28,10 +29,29 @@ button{
       transition: 0.3s;
       align-items: center;
       justify-content: center;
+      font-family: 'Poppins', sans-serif;
       
 }
 button:hover {
+    background-color: #e0a500;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-    transform: translateY(-2px); /* efeito leve de elevação */
+    transform: translateY(-2px); 
     
 }
+
+h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+}
+
+h2 {
+      color: #9e7402;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 5px;
+}
+
