@@ -1,8 +1,9 @@
 .container{
       background-color: #F5F5F5;
+      width: min(100%, 800px);
       max-width: 800px;  
-      margin: 0 auto;    
-      padding: 20px;     
+      margin: 20px auto;    
+      padding: 10px;     
       border: 1px solid #ccc;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       border-radius: 5px; 
@@ -10,6 +11,11 @@
       align-items: center;
       display: flex;
       font-family: 'Poppins', sans-serif;
+      flex-wrap: wrap;
+      white-space: normal;
+      justify-content: center;
+      box-sizing: border-box;
+      overflow: hidden;
     }   
 
 button{
@@ -31,6 +37,7 @@ button{
       justify-content: center;
       font-family: 'Poppins', sans-serif;
       
+      
 }
 button:hover {
     background-color: #e0a500;
@@ -40,18 +47,26 @@ button:hover {
 }
 
 h1 {
-      font-size: 2rem;
+      margin: 0;
+      flex-wrap: wrap;
+      font-size: clamp(1.3rem, 5vw, 2rem);
       color: #333;
-      margin-bottom: 20px;
-      white-space: nowrap;
-      overflow: hidden;
+      overflow-wrap: break-word;      
+      white-space: normal;
+      hyphens: auto;
+      text-align: center;
+
 }
 
 h2 {
       color: #9e7402;
+      font-size: clamp(1.2rem, 4vw, 1rem);
       margin-bottom: 5px;
-      white-space: nowrap;
       overflow: hidden;
       margin: 5px;
+      white-space: normal;
+      overflow-wrap: break-word;
+      text-align: center;
+
 }
 
