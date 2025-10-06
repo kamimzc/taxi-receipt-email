@@ -1,96 +1,103 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./imagens/logotaxi.png" type="image/png">
-    <title>Emissão de Comprovante</title>
-    <link rel="stylesheet" href="./assets/style.css">
-</head>
-<body>
-    <div class="container">
-        <center><h1>Emissão de Comprovante</h1></center>
-        <center><h2>Ponto Táxi Saudade<h2></center>
-        <br><br>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="./assets/logotaxi.png" type="image/png">
+        <title>Emissão de Comprovante</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <link rel="stylesheet" href="./styles/style.css">
+        <link rel="manifest" href="./manifest.json">
+        <meta name="theme-color" content="#ff4081">
 
-        <form id="form-comprovante">
-            <label>Nome do Passageiro: </label>
-            <input type="text" id="nome" placeholder="Nome"required><br><br>
-
-            <label>CPF do Passageiro (se fornecido): </label>
-            <input type="text" id="cpf" placeholder="000.000.000-00"><br><br>
-
-            <label>E-mail do Passageiro (se fornecido): </label>
-            <input type="email" id="email" placeholder="Email"><br><br>
-
-            <label>Telefone do Passageiro (se fornecido): </label>
-            <input type="tel" id="telefone" placeholder="(11) 9999-99999"><br><br>
-
-            <label>Data da Corrida: </label>
-            <input type="date" id="data" required><br><br>
-
-            <label>Origem do Passageiro: </label>
-            <input type="text" id="origem" placeholder="Ex: Casa" required><br><br>
-
-            <label>Destino do Passageiro: </label>
-            <input type="text" id="destino" placeholder="Ex: Shopping"required><br><br>
-
-            <label>Forma de Pagamento: </label>
-            <select id="pagamento" name="pagamento" required>
-                <option value="Selecione">Selecione</option>
-                <option value="Pix">PIX</option>
-                <option value="Cartão">Cartão</option>
-                <option value="Dinheiro">Dinheiro</option>
-            </select>
+    </head>
+    <body>
+        <div class="container">
+            <center><h1>Emissão de Comprovante</h1></center>
+            <center><h2>Ponto Táxi Saudade<h2></center>
             <br><br>
 
-            <label>Valor da Corrida: </label>
-            <input type="text" id="valor" placeholder="R$ 0,00" required><br><br>
-        </form>
+            <form id="form-comprovante">
+                <label>Nome do Passageiro: </label>
+                <input type="text" id="nome" placeholder="Nome"required><br><br>
 
-        <!-- emissão do  PDF -->
-        <div id="comprovante-pdf" style="display:none; padding:20px; font-family:Arial, sans-serif; width: 100%;">
-            <h2 style="text-align:center"> Comprovante de Corrida</h2>
-            <hr>
-            <p><strong>Emitido por:</strong> Ronaldo Ceola - Ponto Táxi Saudade</p>
-            <p><strong>Informações do Taxista:</strong></p>
-            <ul>
-                <li><strong>Nome:</strong> Ronaldo Ceola</li>
-                <li><strong>Modelo do Veículo: </strong>Spin</li>
-                <li><strong>Placa do Veículo: </strong>EVB8A56</li>
-                <li><strong>Autorização do Prefixo Táxi: </strong>90032</li>
-            </ul>
-            <br>
-            <h3><strong>Dados da Corrida</strong></h3>
-            <ul>
-                <li><strong>Nome do Passageiro: </strong><span id="pdf-nome"></span></li>
-                <li><strong>CPF do Passageiro: </strong><span id="pdf-cpf"></span></li>
-                <li><strong>E-mail do Passageiro: </strong><span id="pdf-email"></span></li>
-                <li><strong>Telefone do Passageiro: </strong><span id="pdf-telefone"></span></li>
-                <li><strong>Data: </strong><span id="pdf-data"></span></li>
-                <li><strong>Origem: </strong><span id="pdf-origem"></span></li>
-                <li><strong>Destino: </strong><span id="pdf-destino"></span></li>
-                <li><strong>Forma de Pagamento: </strong><span id="pdf-pagamento"></span></li>
-                <li><strong>Valor: </strong><span id="pdf-valor"></span></li>
-            </ul>
-            <hr>
-            <p style="text-align:center;">Obrigado pela preferência!</p>
+                <label>CPF do Passageiro (se fornecido): </label>
+                <input type="text" id="cpf" placeholder="000.000.000-00"><br><br>
+
+                <label>E-mail do Passageiro (se fornecido): </label>
+                <input type="email" id="email" placeholder="Email"><br><br>
+
+                <label>Telefone do Passageiro (se fornecido): </label>
+                <input type="tel" id="telefone" placeholder="(11) 9999-99999"><br><br>
+
+                <label>Data da Corrida: </label>
+                <input type="date" id="data" required><br><br>
+
+                <label>Origem do Passageiro: </label>
+                <input type="text" id="origem" placeholder="Ex: Casa" required><br><br>
+
+                <label>Destino do Passageiro: </label>
+                <input type="text" id="destino" placeholder="Ex: Shopping"required><br><br>
+
+                <label>Forma de Pagamento: </label>
+                <select id="pagamento" name="pagamento" required>
+                    <option value="Selecione">Selecione</option>
+                    <option value="Pix">PIX</option>
+                    <option value="Cartão">Cartão</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+                <br><br>
+
+                <label>Valor da Corrida: </label>
+                <input type="text" id="valor" placeholder="R$ 0,00" required><br><br>
+                <div id="qrcode"></div>
+            </form>
+
+            <!-- emissão do  PDF -->
+            <div id="comprovante-pdf" style="display:none; padding:20px; font-family:Arial, sans-serif; width: 100%;">
+                <h2 style="text-align:center"> Comprovante de Corrida</h2>
+                <hr>
+                <p><strong>Emitido por:</strong> Ronaldo Ceola - Ponto Táxi Saudade</p>
+                <p><strong>Informações do Taxista:</strong></p>
+                <ul>
+                    <li><strong>Nome:</strong> Ronaldo Ceola</li>
+                    <li><strong>Modelo do Veículo: </strong>Spin</li>
+                    <li><strong>Placa do Veículo: </strong>EVB8A56</li>
+                    <li><strong>Autorização do Prefixo Táxi: </strong>90032</li>
+                </ul>
+                <br>
+                <h3><strong>Dados da Corrida</strong></h3>
+                <ul>
+                    <li><strong>Nome do Passageiro: </strong><span id="pdf-nome"></span></li>
+                    <li><strong>CPF do Passageiro: </strong><span id="pdf-cpf"></span></li>
+                    <li><strong>E-mail do Passageiro: </strong><span id="pdf-email"></span></li>
+                    <li><strong>Telefone do Passageiro: </strong><span id="pdf-telefone"></span></li>
+                    <li><strong>Data: </strong><span id="pdf-data"></span></li>
+                    <li><strong>Origem: </strong><span id="pdf-origem"></span></li>
+                    <li><strong>Destino: </strong><span id="pdf-destino"></span></li>
+                    <li><strong>Forma de Pagamento: </strong><span id="pdf-pagamento"></span></li>
+                    <li><strong>Valor: </strong><span id="pdf-valor"></span></li>
+                </ul>
+                <hr>
+                <p style="text-align:center;">Obrigado pela preferência!</p>
+            </div>
+
+            <br><br>
+            <div class="button">
+                <button type="button" id="btn-email">Enviar por E-mail</button><br><br>
+                <button type="button" id="btn-comprovante">Emitir Comprovante</button><br><br>
+                <button type="button" id="btn-conversa">Entrar na Conversa</button>
+                <br>
+                <button type="button" id="btn-pagamento">Gerar QR Code</button>
+            </div>
         </div>
 
-        <br><br>
-        <div class="button">
-            <button type="button" id="btn-email">Enviar por E-mail</button><br><br>
-            <button type="button" id="btn-comprovante">Emitir Comprovante</button><br><br>
-            <button type="button" id="btn-conversa">Entrar na Conversa</button>
-        </div>
-    </div>
+        <!-- Libs antes -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser/dist/email.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Libs antes -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser/dist/email.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <!-- endereço do JS -->
-    <script src="./script/buttons.js"></script>
-    <script src="./script/formatacao.js"></script>
-</body>
-</html>
+        <!-- endereço do JS -->
+        <script src="./script/buttons.js"></script>
+        <script src="./script/formatacao.js"></script>
+    </body>
+    </html>
