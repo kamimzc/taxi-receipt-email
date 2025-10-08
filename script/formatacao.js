@@ -16,7 +16,7 @@ document.getElementById("telefone").addEventListener("input", function (e) {
 });
 
 /*formatação do valor*/
-document.getElementById("valor").addEventListener("input", function (e) {
+document.getElementById("amount").addEventListener("input", function (e) {
   let valor = e.target.value.replace(/\D/g, ""); // só números
   valor = (valor/100).toFixed(2) + ""; // divide por 100 e força 2 casas decimais
   valor = valor.replace(".", ","); // vírgula como separador decimal

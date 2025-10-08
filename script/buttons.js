@@ -146,8 +146,8 @@ document.getElementById("btn-conversa").addEventListener("click", entrarNaConver
     }
 
     function gerarPayloadPix(valor) {
-      const chavePix = "08573589876"; 
-      const nome = "RONALDO CEOLA";  // ✅ <= até 25 chars
+      const chavePix = "5511940774530"; // ✅ formato internacional
+      const nome = "Ronaldo Ceola";  // ✅ <= até 25 chars
       const cidade = "SAO PAULO";        // ✅ <= até 15 chars
 
       const gui = emv("00", "BR.GOV.BCB.PIX");
@@ -168,8 +168,8 @@ document.getElementById("btn-conversa").addEventListener("click", entrarNaConver
       return semCRC + crc;
     }
 
-    document.getElementById('btn-pagamento').addEventListener('click', () => {
-      const valor = document.getElementById('valor').value;
+    document.getElementById('generate').addEventListener('click', () => {
+      const valor = document.getElementById('amount').value;
       const payload = gerarPayloadPix(valor);
 
       const qrcodeDiv = document.getElementById('qrcode');
@@ -179,18 +179,7 @@ document.getElementById("btn-conversa").addEventListener("click", entrarNaConver
         width: 220,
         height: 220
       });
-
-      console.log("Payload PIX:", payload);
-    });
-    document.getElementById('btn-pagamento').addEventListener('click', () => {
-    let valorInput = document.getElementById('valor').value;
-    // Remove "R$", espaços e troca vírgula por ponto
-    valorInput = valorInput.replace(/[^\d,.-]/g, '').replace(',', '.');
-
-    const payload = gerarPayloadPix(valorInput);
-
-    // Abre uma nova janela
-    const win = window.open('', '_blank', 'width=300,height=350');
+        console.log("Payload PIX:", payload);
 
     // Escreve o HTML da nova janela
     win.document.write(`
