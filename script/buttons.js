@@ -47,15 +47,23 @@ function updateComprovanteUI(data) {
 
 // Função para gerar e baixar o PDF
 function baixarPDF() {
-    const element = document.getElementById("comprovante-pdf");
-    const nome = document.getElementById("nome").value || "passageiro";
-    const opt = {
-        margin: 10,
-        filename: "Comprovante de Corrida - " + nome + ".pdf",
-        html2canvas: { scale: 1.5, useCORS: true, backgroundColor: "#ffffff" },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    };
-    html2pdf().set(opt).from(element).save();
+  const element = document.getElementById("comprovante-pdf");
+  const nome = document.getElementById("nome").value || "passageiro";
+
+  const opt = {
+    margin: [10, 10, 10, 10], // topo, direita, baixo, esquerda
+    filename: "Comprovante de Corrida - " + nome + ".pdf",
+    html2canvas: {
+      scale: 2, // aumenta a resolução
+      useCORS: true,
+      scrollY: 0, // evita capturar área fora do viewport
+      backgroundColor: "#ffffff"
+    },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // evita corte de conteúdo
+  };
+
+  html2pdf().set(opt).from(element).save();
 }
 
 // Função para enviar o comprovante por email
