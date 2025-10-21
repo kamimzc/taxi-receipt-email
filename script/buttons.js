@@ -1,215 +1,233 @@
-// Inicializa EmailJS
+// ✅ Inicializa EmailJS
 emailjs.init("VWEv3xUnqizxBrP-F");
 
-// Função para pegar os dados do formulário
+// -----------------------------
+// 🔹 Funções principais do comprovante
+// -----------------------------
 function getComprovanteData() {
-    const campos = ["nome", "cpf", "email", "telefone", "data", "origem", "destino", "pagamento", "valor"];
-    const data = {};
-    campos.forEach(campo => {
-        data[campo] = document.querySelector(`#${campo}`)?.value || "";
-    });
-    return data;
+  const campos = ["nome", "cpf", "email", "telefone", "data", "origem", "destino", "pagamento", "valor"];
+  const data = {};
+  campos.forEach(campo => {
+    data[campo] = document.querySelector(`#${campo}`)?.value || "";
+  });
+  return data;
 }
 
-// Atualiza o HTML do comprovante
 function updateComprovanteUI(data) {
-    const camposUI = {
-        nome: "#pdf-nome",
-        cpf: "#pdf-cpf",
-        email: "#pdf-email",
-        telefone: "#pdf-telefone",
-        data: "#pdf-data",
-        origem: "#pdf-origem",
-        destino: "#pdf-destino",
-        pagamento: "#pdf-pagamento",
-        valor: "#pdf-valor"
-    };
+  const camposUI = {
+    nome: "#pdf-nome",
+    cpf: "#pdf-cpf",
+    email: "#pdf-email",
+    telefone: "#pdf-telefone",
+    data: "#pdf-data",
+    origem: "#pdf-origem",
+    destino: "#pdf-destino",
+    pagamento: "#pdf-pagamento",
+    valor: "#pdf-valor"
+  };
 
-    for (let campo in camposUI) {
-        const el = document.querySelector(camposUI[campo]);
-        if (!el) continue;
+  for (let campo in camposUI) {
+    const el = document.querySelector(camposUI[campo]);
+    if (!el) continue;
 
-        let valor = data[campo];
-        if (campo === "data" && valor) {
-            valor = new Date(valor).toLocaleString("pt-BR");
-        }
-
-        if (valor) {
-            el.parentElement.style.display = "list-item"; // mostra <li>
-            el.textContent = valor;
-        } else {
-            el.parentElement.style.display = "none"; // esconde <li> se vazio
-        }
+    let valor = data[campo];
+    if (campo === "data" && valor) {
+      valor = new Date(valor).toLocaleString("pt-BR");
     }
 
-    document.getElementById("comprovante-pdf").style.display = "block"; // mostra div
+    if (valor) {
+      el.parentElement.style.display = "list-item";
+      el.textContent = valor;
+    } else {
+      el.parentElement.style.display = "none";
+    }
+  }
+
+  document.getElementById("comprovante-pdf").style.display = "block";
 }
 
-// Função para gerar e baixar o PDF
 function baixarPDF() {
   const element = document.getElementById("comprovante-pdf");
   const nome = document.getElementById("nome").value || "passageiro";
 
   const opt = {
-    margin: [10, 10, 10, 10], // topo, direita, baixo, esquerda
+    margin: [10, 10, 10, 10],
     filename: "Comprovante de Corrida - " + nome + ".pdf",
-    html2canvas: {
-      scale: 2, // aumenta a resolução
-      useCORS: true,
-      scrollY: 0, // evita capturar área fora do viewport
-      backgroundColor: "#ffffff"
-    },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: "#ffffff" },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // evita corte de conteúdo
+    pagebreak: { mode: ["avoid-all", "css", "legacy"] }
   };
 
   html2pdf().set(opt).from(element).save();
 }
 
-// Função para enviar o comprovante por email
 function enviarEmail() {
-    const data = getComprovanteData();
-    updateComprovanteUI(data);
+  const data = getComprovanteData();
+  updateComprovanteUI(data);
 
-    const campos = {
-        nome: "Nome do Passageiro",
-        cpf: "CPF",
-        data: "Data",
-        origem: "Origem",
-        destino: "Destino",
-        pagamento: "Forma de Pagamento",
-        valor: "Valor"
-    };
+  const campos = {
+    nome: "Nome do Passageiro",
+    cpf: "CPF",
+    data: "Data",
+    origem: "Origem",
+    destino: "Destino",
+    pagamento: "Forma de Pagamento",
+    valor: "Valor"
+  };
 
-    let emailBody = "<ul>";
-    for (let key in campos) {
-        if (data[key]) {
-            let valor = key === "data" ? new Date(data[key]).toLocaleString("pt-BR") : data[key];
-            emailBody += `<li><strong>${campos[key]}:</strong> ${valor}</li>`;
-        }
+  let emailBody = "<ul>";
+  for (let key in campos) {
+    if (data[key]) {
+      let valor = key === "data" ? new Date(data[key]).toLocaleString("pt-BR") : data[key];
+      emailBody += `<li><strong>${campos[key]}:</strong> ${valor}</li>`;
     }
-    emailBody += "</ul>";
+  }
+  emailBody += "</ul>";
 
-    const emailData = {
-        nome: data.nome || "",
-        emailBody: emailBody,
-        email: data.email || ""
-    };
+  const emailData = {
+    nome: data.nome || "",
+    emailBody: emailBody,
+    email: data.email || ""
+  };
 
-    emailjs.send("service_f81ljjf", "template_29nrnva", emailData)
-        .then(() => alert("✅ Comprovante enviado por e-mail!"))
-        .catch(err => {
-            console.error("Erro:", err);
-            alert("❌ Erro ao enviar comprovante.");
-        });
-}
-
-// Função para abrir conversa no WhatsApp
-function entrarNaConversa() {
-    const telefone = document.querySelector("#telefone").value.replace(/\D/g, "");
-    if (!telefone || telefone.length < 10) return alert("Por favor, insira um telefone válido.");
-    window.open(`https://wa.me/${telefone}`, "_blank");
-}
-
-// EVENTOS
-
-// Botão para gerar PDF
-document.getElementById("btn-comprovante").addEventListener("click", () => {
-    const data = getComprovanteData();
-    updateComprovanteUI(data);
-
-    // Espera o DOM atualizar antes de gerar PDF
-    requestAnimationFrame(() => {
-        baixarPDF();
+  emailjs
+    .send("service_f81ljjf", "template_29nrnva", emailData)
+    .then(() => alert("✅ Comprovante enviado por e-mail!"))
+    .catch(err => {
+      console.error("Erro:", err);
+      alert("❌ Erro ao enviar comprovante.");
     });
+}
+
+function entrarNaConversa() {
+  const telefone = document.querySelector("#telefone").value.replace(/\D/g, "");
+  if (!telefone || telefone.length < 10) return alert("Por favor, insira um telefone válido.");
+  window.open(`https://wa.me/${telefone}`, "_blank");
+}
+
+// -----------------------------
+// 📱 Eventos
+// -----------------------------
+document.getElementById("btn-comprovante").addEventListener("click", () => {
+  const data = getComprovanteData();
+  updateComprovanteUI(data);
+  requestAnimationFrame(() => {
+    baixarPDF();
+  });
 });
 
-// Botão para enviar por email
 document.getElementById("btn-email").addEventListener("click", enviarEmail);
-
-// Botão para WhatsApp
 document.getElementById("btn-conversa").addEventListener("click", entrarNaConversa);
 
+// -----------------------------
+// 💸 Funções do QR Code PIX
+// -----------------------------
+function emv(id, value) {
+  const len = String(value.length).padStart(2, "0");
+  return id + len + value;
+}
 
-//Gerar QR Code para pagamento via Pix
-  function emv(id, value) {
-      const len = String(value.length).padStart(2, '0');
-      return id + len + value;
+function crc16(str) {
+  let crc = 0xffff;
+  for (let c of str) {
+    crc ^= c.charCodeAt(0) << 8;
+    for (let i = 0; i < 8; i++) {
+      if ((crc & 0x8000) !== 0) crc = (crc << 1) ^ 0x1021;
+      else crc <<= 1;
+      crc &= 0xffff;
     }
+  }
+  return crc.toString(16).toUpperCase().padStart(4, "0");
+}
 
-    function crc16(str) {
-      let crc = 0xFFFF;
-      for (let c of str) {
-        crc ^= c.charCodeAt(0) << 8;
-        for (let i = 0; i < 8; i++) {
-          if ((crc & 0x8000) !== 0) {
-            crc = (crc << 1) ^ 0x1021;
-          } else {
-            crc = crc << 1;
+function gerarPayloadPix(valor) {
+  const chavePix = "08573589876"; // ✅ Chave Pix
+  const nome = "Ronaldo Ceola"; // Máx. 25 caracteres
+  const cidade = "SAO PAULO"; // Máx. 15 caracteres
+
+  // 🔹 Monta o Merchant Account Info corretamente
+  const gui = emv("00", "BR.GOV.BCB.PIX");
+  const key = emv("01", chavePix);
+  const mai = emv("26", gui + key);
+
+  const payload =
+    emv("00", "01") + // Payload Format Indicator
+    mai +
+    emv("52", "0000") + // Merchant Category Code
+    emv("53", "986") + // Currency (BRL)
+    (valor ? emv("54", parseFloat(valor).toFixed(2)) : "") + // Amount
+    emv("58", "BR") + // Country
+    emv("59", nome.substring(0, 25)) + // Nome
+    emv("60", cidade.substring(0, 15)) + // Cidade
+    emv("62", emv("05", "***")) + // Additional Data
+    "6304"; // CRC placeholder
+
+  const crc = crc16(payload);
+  return payload + crc;
+}
+
+// -----------------------------
+// 🔹 Evento: Gerar QR Code PIX
+// -----------------------------
+document.getElementById("generate").addEventListener("click", () => {
+  let valorInput = document.getElementById("amount").value.trim();
+  valorInput = valorInput.replace(",", ".");
+  let valorNumerico = parseFloat(valorInput);
+  if (isNaN(valorNumerico)) valorNumerico = 0;
+
+  const payload = gerarPayloadPix(valorNumerico);
+  const win = window.open("", "_blank");
+
+  win.document.write(`
+    <html>
+      <head>
+        <title>QR Code PIX</title>
+        <meta charset="UTF-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 30px;
           }
-          crc &= 0xFFFF;
-        }
-      }
-      return crc.toString(16).toUpperCase().padStart(4, '0');
-    }
+          #qrcode {
+            margin: 20px auto;
+            width: 220px;
+            height: 220px;
+          }
+          .valor {
+            font-size: 18px;
+            margin-top: 10px;
+          }
+          textarea {
+            width: 90%;
+            height: 60px;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 5px;
+            resize: none;
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Pagamento PIX</h2>
+        <div id="qrcode"></div>
+        <p class="valor">Valor: R$ ${valorNumerico.toFixed(2)}</p>
+        <textarea readonly>${payload}</textarea>
+        <p>Copie o código acima ou escaneie o QR Code no app do seu banco.</p>
 
-    function gerarPayloadPix(valor) {
-      const chavePix = "5511940774530"; // ✅ formato internacional
-      const nome = "Ronaldo Ceola";  // ✅ <= até 25 chars
-      const cidade = "SAO PAULO";        // ✅ <= até 15 chars
+        <script>
+          new QRCode(document.getElementById('qrcode'), {
+            text: "${payload}",
+            width: 220,
+            height: 220
+          });
+        </script>
+      </body>
+    </html>
+  `);
 
-      const gui = emv("00", "BR.GOV.BCB.PIX");
-      const key = emv("01", chavePix);
-      const mai = emv("26", gui + key);
-
-      const p00 = emv("00", "01");
-      const p52 = emv("52", "0000");
-      const p53 = emv("53", "986"); 
-      const p54 = valor ? emv("54", parseFloat(valor).toFixed(2)) : "";
-      const p58 = emv("58", "BR");
-      const p59 = emv("59", nome.substring(0,25));
-      const p60 = emv("60", cidade.substring(0,15));
-      const p62 = emv("62", emv("05", "*"));
-
-      const semCRC = p00 + mai + p52 + p53 + p54 + p58 + p59 + p60 + p62 + "6304";
-      const crc = crc16(semCRC);
-      return semCRC + crc;
-    }
-
-    document.getElementById('generate').addEventListener('click', () => {
-      const valor = document.getElementById('amount').value;
-      const payload = gerarPayloadPix(valor);
-
-      const qrcodeDiv = document.getElementById('qrcode');
-      qrcodeDiv.innerHTML = "";
-      new QRCode(qrcodeDiv, {
-        text: payload,
-        width: 220,
-        height: 220
-      });
-        console.log("Payload PIX:", payload);
-
-    // Escreve o HTML da nova janela
-    win.document.write(`
-        <html>
-        <head>
-            <title>QR Code PIX</title>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-        </head>
-        <body>
-            <h2 style="text-align:center;">Pagamento PIX</h2>
-            <div id="qrcode" style="margin:20px auto; width:220px; height:220px;"></div>
-            <p style="text-align:center;">Valor: R$ ${valorInput}</p>
-            <script>
-                new QRCode(document.getElementById('qrcode'), {
-                    text: "${payload}",
-                    width: 220,
-                    height: 220
-                });
-            </script>
-        </body>
-        </html>
-    `);
-
-    console.log("Payload PIX:", payload);
+  console.log("✅ Valor numérico:", valorNumerico);
+  console.log("✅ Payload PIX:", payload);
 });
